@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.activity_update_card.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class UpdateCard : AppCompatActivity() {
+class UpdateTaskActivity : AppCompatActivity() {
     private lateinit var database: myDatabase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

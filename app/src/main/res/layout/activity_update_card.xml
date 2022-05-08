@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:gravity="center"
     android:padding="20dp"
-    tools:context=".UpdateCard">
+    tools:context=".UpdateTaskActivity">
 
     <TextView
         android:layout_width="match_parent"

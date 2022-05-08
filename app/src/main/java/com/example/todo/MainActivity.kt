@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
             applicationContext, myDatabase::class.java, "To_Do"
         ).build()
         add.setOnClickListener {
-            val intent = Intent(this, CreateCard::class.java)
+            val intent = Intent(this, AddTaskActivity::class.java)
             startActivity(intent)
         }
         deleteAll.setOnClickListener {

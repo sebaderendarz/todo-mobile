@@ -16,10 +16,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".UpdateCard"
+            android:name=".UpdateTaskActivity"
             android:windowSoftInputMode="adjustResize"/>
         <activity
-            android:name=".CreateCard"
+            android:name=".AddTaskActivity"
             android:windowSoftInputMode="adjustResize" />
     </application>
 
