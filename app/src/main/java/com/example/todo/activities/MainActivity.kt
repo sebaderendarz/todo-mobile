@@ -1,20 +1,18 @@
-package com.example.todo
+package com.example.todo.activities
 
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Rect
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.AttributeSet
 import android.view.*
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
+import com.example.todo.TasksAdapter
+import com.example.todo.DataObject
+import com.example.todo.R
+import com.example.todo.ToDoDatabase
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 
 // entity - table
@@ -35,7 +33,7 @@ class MainActivity : ActivityBase() {
     }
 
     private fun setRecycler() {
-        recycler_view.adapter = Adapter(DataObject.getAllData())
+        recycler_view.adapter = TasksAdapter(DataObject.getAllData())
         recycler_view.layoutManager = LinearLayoutManager(this)
     }
 

@@ -1,8 +1,12 @@
-package com.example.todo
+package com.example.todo.activities
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.room.Room
+import com.example.todo.DataObject
+import com.example.todo.Entity
+import com.example.todo.R
+import com.example.todo.ToDoDatabase
 import kotlinx.android.synthetic.main.activity_update_task.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

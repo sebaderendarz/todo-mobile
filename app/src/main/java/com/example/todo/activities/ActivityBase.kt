@@ -1,4 +1,4 @@
-package com.example.todo
+package com.example.todo.activities
 
 import android.content.Context
 import android.graphics.Rect

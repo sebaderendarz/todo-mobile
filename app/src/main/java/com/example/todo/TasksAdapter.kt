@@ -6,10 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.todo.activities.UpdateTaskActivity
 import kotlinx.android.synthetic.main.task_view.view.*
 
 
-class Adapter(var data: List<CardInfo>) : RecyclerView.Adapter<Adapter.viewHolder>() {
+class TasksAdapter(var data: List<CardInfo>) : RecyclerView.Adapter<TasksAdapter.viewHolder>() {
     class viewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var title = itemView.title
         var priority = itemView.priority
@@ -31,7 +32,7 @@ class Adapter(var data: List<CardInfo>) : RecyclerView.Adapter<Adapter.viewHolde
         holder.title.text = data[position].title
         holder.priority.text = data[position].priority
         holder.itemView.setOnClickListener{
-            val intent= Intent(holder.itemView.context,UpdateTaskActivity::class.java)
+            val intent= Intent(holder.itemView.context, UpdateTaskActivity::class.java)
             intent.putExtra("id",position)
             holder.itemView.context.startActivity(intent)
         }

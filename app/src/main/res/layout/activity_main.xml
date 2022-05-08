@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/black"
-    tools:context=".MainActivity">
+    tools:context=".activities.MainActivity">
 
     // Problem with bubble color in inputText fixed thanks to change of `android:theme`
     // https://stackoverflow.com/questions/61801733/problem-with-bubble-color-of-textinputedittext

@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ToDoNoActionBar">
-        <activity android:name=".MainActivity"
+        <activity android:name=".activities.MainActivity"
             android:label="Your Tasks"
             android:theme="@style/Theme.ToDo">
             <intent-filter>
@@ -18,10 +18,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".UpdateTaskActivity"
+            android:name=".activities.UpdateTaskActivity"
             android:windowSoftInputMode="adjustResize"/>
         <activity
-            android:name=".AddTaskActivity"
+            android:name=".activities.AddTaskActivity"
             android:windowSoftInputMode="adjustResize" />
     </application>
 
