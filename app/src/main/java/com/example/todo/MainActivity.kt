@@ -27,13 +27,6 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, AddTaskActivity::class.java)
             startActivity(intent)
         }
-        deleteAll.setOnClickListener {
-            DataObject.deleteAll()
-            GlobalScope.launch {
-                database.dao().deleteAll()
-            }
-            setRecycler()
-        }
 
         setRecycler()
 

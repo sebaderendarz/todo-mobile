@@ -12,10 +12,6 @@ object DataObject {
         return listdata
     }
 
-    fun deleteAll(){
-        listdata.clear()
-    }
-
     fun getData(pos:Int): CardInfo {
         return listdata[pos]
     }
