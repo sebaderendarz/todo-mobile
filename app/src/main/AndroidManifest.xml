@@ -8,8 +8,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ToDoTheme">
-        <activity android:name=".MainActivity">
+        android:theme="@style/Theme.ToDoNoActionBar">
+        <activity android:name=".MainActivity"
+            android:label="Your Tasks"
+            android:theme="@style/Theme.ToDo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
