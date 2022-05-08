@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:theme="@style/Theme.ToDoNoActionBar"
     tools:context=".activities.AddTaskActivity">
 
     <TextView

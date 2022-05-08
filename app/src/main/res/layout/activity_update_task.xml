@@ -6,49 +6,51 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="20dp"
     tools:context=".activities.UpdateTaskActivity">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
         android:text="Update Details"
         android:textColor="@color/white"
         android:textSize="36sp"
         android:gravity="center"
         android:fontFamily="sans-serif"/>
 
-    <EditText
-        android:id="@+id/update_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter Task"
-        android:layout_marginTop="30dp"
-        android:padding="15dp"
-        android:background="@drawable/black_edit_text"
-        android:textColorHint="#BFBBBB"
-        android:textColor="@color/white"
-        />
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/TextInput"
+        android:id="@+id/updateTitleInputLayout"
+        android:layout_marginBottom="20dp"
+        android:hint="Title">
 
-    <EditText
-        android:id="@+id/update_priority"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:hint="Priority"
-        android:padding="15dp"
-        android:background="@drawable/black_edit_text"
-        android:textColorHint="#BFBBBB"
-        android:textColor="@color/white"
-        />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/updateTitleInputText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textColor="@color/white" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/TextInput"
+        android:id="@+id/updateDescriptionInputLayout"
+        android:layout_marginBottom="20dp"
+        android:hint="Description">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/updateDescriptionInputText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="25dp">
+        android:orientation="horizontal">
         <Button
-            android:id="@+id/update_button"
+            android:id="@+id/updateButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Update"/>
@@ -59,10 +61,10 @@
         android:layout_weight="1"/>
 
         <Button
-            android:id="@+id/delete_button"
+            android:id="@+id/deleteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="#FF5722"
+            android:backgroundTint="@color/red"
             android:text="Delete"/>
     </LinearLayout>
 

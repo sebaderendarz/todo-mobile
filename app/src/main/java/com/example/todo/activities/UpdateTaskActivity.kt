@@ -24,34 +24,34 @@ class UpdateTaskActivity : ActivityBase() {
         if (pos != -1) {
             val title = DataObject.getData(pos).title
             val priority = DataObject.getData(pos).priority
-            update_title.setText(title)
-            update_priority.setText(priority)
+            updateTitleInputText.setText(title)
+            updateDescriptionInputText.setText(priority)
 
-            delete_button.setOnClickListener {
+            deleteButton.setOnClickListener {
                 DataObject.deleteData(pos)
                 GlobalScope.launch {
                     database.dao().deleteTask(
                         Entity(
                             pos + 1,
-                            update_title.text.toString(),
-                            update_priority.text.toString()
+                            updateTitleInputText.text.toString(),
+                            updateDescriptionInputText.text.toString()
                         )
                     )
                 }
                 myIntent()
             }
 
-            update_button.setOnClickListener {
+            updateButton.setOnClickListener {
                 DataObject.updateData(
                     pos,
-                    update_title.text.toString(),
-                    update_priority.text.toString()
+                    updateTitleInputText.text.toString(),
+                    updateDescriptionInputText.text.toString()
                 )
                 GlobalScope.launch {
                     database.dao().updateTask(
                         Entity(
-                            pos + 1, update_title.text.toString(),
-                            update_priority.text.toString()
+                            pos + 1, updateTitleInputText.text.toString(),
+                            updateDescriptionInputText.text.toString()
                         )
                     )
                 }
