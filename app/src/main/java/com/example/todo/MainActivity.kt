@@ -29,13 +29,9 @@ class MainActivity : ActivityBase() {
         database = Room.databaseBuilder(
             applicationContext, ToDoDatabase::class.java, "To_Do"
         ).build()
-        add.setOnClickListener {
-            val intent = Intent(this, AddTaskActivity::class.java)
-            startActivity(intent)
-        }
 
         setRecycler()
-        configureSearchBarBinding()
+        configureBinding()
     }
 
     private fun setRecycler() {
@@ -43,7 +39,12 @@ class MainActivity : ActivityBase() {
         recycler_view.layoutManager = LinearLayoutManager(this)
     }
 
-    private fun configureSearchBarBinding(){
+    private fun configureBinding(){
+        add.setOnClickListener {
+            val intent = Intent(this, AddTaskActivity::class.java)
+            startActivity(intent)
+        }
+
         textInputLayout.setEndIconOnClickListener {
             val imm: InputMethodManager =
                 textInputText.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
