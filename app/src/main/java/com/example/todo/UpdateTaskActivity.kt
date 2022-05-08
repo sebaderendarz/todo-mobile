@@ -3,18 +3,17 @@ package com.example.todo
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.room.Room
-import kotlinx.android.synthetic.main.activity_update_card.*
+import kotlinx.android.synthetic.main.activity_update_task.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+
 
 class UpdateTaskActivity : AppCompatActivity() {
     private lateinit var database: myDatabase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_update_card)
+        setContentView(R.layout.activity_update_task)
         database = Room.databaseBuilder(
             applicationContext, myDatabase::class.java, "To_Do"
         ).build()
@@ -22,8 +21,8 @@ class UpdateTaskActivity : AppCompatActivity() {
         if (pos != -1) {
             val title = DataObject.getData(pos).title
             val priority = DataObject.getData(pos).priority
-            create_title.setText(title)
-            create_priority.setText(priority)
+            update_title.setText(title)
+            update_priority.setText(priority)
 
             delete_button.setOnClickListener {
                 DataObject.deleteData(pos)
@@ -31,8 +30,8 @@ class UpdateTaskActivity : AppCompatActivity() {
                     database.dao().deleteTask(
                         Entity(
                             pos + 1,
-                            create_title.text.toString(),
-                            create_priority.text.toString()
+                            update_title.text.toString(),
+                            update_priority.text.toString()
                         )
                     )
                 }
@@ -42,14 +41,14 @@ class UpdateTaskActivity : AppCompatActivity() {
             update_button.setOnClickListener {
                 DataObject.updateData(
                     pos,
-                    create_title.text.toString(),
-                    create_priority.text.toString()
+                    update_title.text.toString(),
+                    update_priority.text.toString()
                 )
                 GlobalScope.launch {
                     database.dao().updateTask(
                         Entity(
-                            pos + 1, create_title.text.toString(),
-                            create_priority.text.toString()
+                            pos + 1, update_title.text.toString(),
+                            update_priority.text.toString()
                         )
                     )
                 }
@@ -59,7 +58,7 @@ class UpdateTaskActivity : AppCompatActivity() {
         }
     }
 
-    fun myIntent() {
+    private fun myIntent() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     }
