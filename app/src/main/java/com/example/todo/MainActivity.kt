@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun setRecycler() {
+    private fun setRecycler() {
         recycler_view.adapter = Adapter(DataObject.getAllData())
         recycler_view.layoutManager = LinearLayoutManager(this)
     }
