@@ -6,46 +6,50 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="20dp"
     android:theme="@style/Theme.ToDoNoActionBar"
     tools:context=".activities.AddTaskActivity">
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
         android:text="Enter Details"
         android:textColor="@color/white"
         android:textSize="36sp"
         android:gravity="center"
         android:fontFamily="sans-serif"/>
-    <EditText
-        android:id="@+id/add_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter Task"
-        android:layout_marginTop="30dp"
-        android:padding="15dp"
-        android:background="@drawable/black_edit_text"
-        android:textColorHint="#BFBBBB"
-        android:textColor="@color/white"
-        />
 
-    <EditText
-        android:id="@+id/add_priority"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:hint="Priority"
-        android:padding="15dp"
-        android:background="@drawable/black_edit_text"
-        android:textColorHint="#BFBBBB"
-        android:textColor="@color/white"
-        />
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/TextInput"
+        android:id="@+id/addTitleInputLayout"
+        android:layout_marginBottom="20dp"
+        android:hint="Title">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/addTitleInputText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textColor="@color/white" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/TextInput"
+        android:id="@+id/addDescriptionInputLayout"
+        android:layout_marginBottom="20dp"
+        android:hint="Description">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/addDescriptionInputText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/save_button"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
         android:text="Save"/>
 
 </LinearLayout>

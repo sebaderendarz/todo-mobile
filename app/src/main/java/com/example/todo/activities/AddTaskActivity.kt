@@ -22,11 +22,11 @@ class AddTaskActivity : ActivityBase() {
             applicationContext, ToDoDatabase::class.java, "To_Do"
         ).build()
         save_button.setOnClickListener {
-            if (add_title.text.toString().trim { it <= ' ' }.isNotEmpty()
-                && add_priority.text.toString().trim { it <= ' ' }.isNotEmpty()
+            if (addTitleInputText.text.toString().trim { it <= ' ' }.isNotEmpty()
+                && addDescriptionInputText.text.toString().trim { it <= ' ' }.isNotEmpty()
             ) {
-                var title = add_title.getText().toString()
-                var priority = add_priority.getText().toString()
+                var title = addTitleInputText.getText().toString()
+                var priority = addDescriptionInputText.getText().toString()
                 DataObject.setData(title, priority)
                 GlobalScope.launch {
                     database.dao().insertTask(Entity(0, title, priority))
@@ -38,5 +38,6 @@ class AddTaskActivity : ActivityBase() {
             }
         }
     }
+
 }
 

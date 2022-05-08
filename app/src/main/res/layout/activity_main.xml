@@ -14,9 +14,9 @@
         android:layout_marginTop="5dp"
         android:layout_marginBottom="20dp"
         android:hint="Enter Task Title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:endIconMode="custom"
+        app:endIconDrawable="@drawable/ic_baseline_search_35"
+        app:endIconTint="@color/white">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/textInputText"

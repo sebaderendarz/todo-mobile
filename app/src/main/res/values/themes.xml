@@ -43,9 +43,6 @@
         <item name="boxCornerRadiusTopEnd">40dp</item>
         <item name="boxCornerRadiusBottomStart">40dp</item>
         <item name="boxCornerRadiusBottomEnd">40dp</item>
-        <item name="endIconMode">custom</item>
-        <item name="endIconDrawable">@drawable/ic_baseline_search_35</item>
-        <item name="endIconTint">@color/white</item>
         <item name="maxImageSize">25dp</item>
         <item name="android:theme">@style/TextInputLayoutAppearance</item>
         <item name="android:layout_width">match_parent</item>
