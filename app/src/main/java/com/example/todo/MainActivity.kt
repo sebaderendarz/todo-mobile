@@ -16,12 +16,12 @@ import kotlinx.coroutines.launch
 // database
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var database: myDatabase
+    private lateinit var database: ToDoDatabase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         database = Room.databaseBuilder(
-            applicationContext, myDatabase::class.java, "To_Do"
+            applicationContext, ToDoDatabase::class.java, "To_Do"
         ).build()
         add.setOnClickListener {
             val intent = Intent(this, AddTaskActivity::class.java)

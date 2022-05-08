@@ -10,12 +10,12 @@ import kotlinx.coroutines.launch
 
 
 class UpdateTaskActivity : AppCompatActivity() {
-    private lateinit var database: myDatabase
+    private lateinit var database: ToDoDatabase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_update_task)
         database = Room.databaseBuilder(
-            applicationContext, myDatabase::class.java, "To_Do"
+            applicationContext, ToDoDatabase::class.java, "To_Do"
         ).build()
         val pos = intent.getIntExtra("id", -1)
         if (pos != -1) {

@@ -13,12 +13,12 @@ import kotlinx.coroutines.launch
 
 
 class AddTaskActivity : AppCompatActivity() {
-    private lateinit var database: myDatabase
+    private lateinit var database: ToDoDatabase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_task)
         database = Room.databaseBuilder(
-            applicationContext, myDatabase::class.java, "To_Do"
+            applicationContext, ToDoDatabase::class.java, "To_Do"
         ).build()
         save_button.setOnClickListener {
             if (add_title.text.toString().trim { it <= ' ' }.isNotEmpty()
