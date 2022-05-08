@@ -1,7 +1,6 @@
 package com.example.todo
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.room.Room
 import kotlinx.android.synthetic.main.activity_update_task.*
@@ -9,7 +8,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
-class UpdateTaskActivity : AppCompatActivity() {
+class UpdateTaskActivity : ActivityBase() {
     private lateinit var database: ToDoDatabase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

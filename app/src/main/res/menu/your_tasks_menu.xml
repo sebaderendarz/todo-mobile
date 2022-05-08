@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group android:checkableBehavior="all">
+        <item android:id="@+id/urgentFirstItem"
+            android:title="Urgent First"
+            android:checkable="true"
+            app:showAsAction="never" />
+
+        <item android:id="@+id/hideDoneItem"
+            android:title="Hide Done"
+            app:showAsAction="never"/>
+    </group>
+
+    <item android:id="@+id/categoryItem"
+        android:title="Category"
+        app:showAsAction="never">
+        <menu>
+            <item android:id="@+id/categoryAll"
+                android:title="All" />
+            <item android:id="@+id/categoryHome"
+                android:title="Home" />
+            <item android:id="@+id/categoryWork"
+                android:title="Work" />
+            <item android:id="@+id/categoryHobby"
+                android:title="Hobby" />
+            <item android:id="@+id/categoryOther"
+                android:title="Other" />
+        </menu>
+    </item>
+
+    <item android:id="@+id/notificationItem"
+        android:title="Notification"
+        app:showAsAction="never">
+        <menu>
+            <item android:id="@+id/notification5Minutes"
+                android:title="5 Minutes Before" />
+            <item android:id="@+id/notification15Minutes"
+                android:title="15 Minutes Before" />
+            <item android:id="@+id/notification30Minutes"
+                android:title="30 Minutes Before" />
+            <item android:id="@+id/notification60Minutes"
+                android:title="60 Minutes Before" />
+        </menu>
+    </item>
+
+</menu>

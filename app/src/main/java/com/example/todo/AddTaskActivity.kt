@@ -2,17 +2,14 @@ package com.example.todo
 
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.room.Room
 import kotlinx.android.synthetic.main.activity_add_task.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
-class AddTaskActivity : AppCompatActivity() {
+class AddTaskActivity : ActivityBase() {
     private lateinit var database: ToDoDatabase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
