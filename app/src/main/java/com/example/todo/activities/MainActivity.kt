@@ -38,7 +38,7 @@ class MainActivity : ActivityBase() {
     }
 
     private fun configureBinding(){
-        add.setOnClickListener {
+        addTaskButton.setOnClickListener {
             val intent = Intent(this, AddTaskActivity::class.java)
             startActivity(intent)
         }
