@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">ToDo</string>
+    <string name="categoryAll">All</string>
+    <string name="categoryHome">Home</string>
+    <string name="categoryWork">Work</string>
+    <string name="categoryHobby">Hobby</string>
+    <string name="categoryOther">Other</string>
+
+    <string-array name="TaskCategories">
+        <item>Home</item>
+        <item>Work</item>
+        <item>Hobby</item>
+        <item>Other</item>
+    </string-array>
 </resources>

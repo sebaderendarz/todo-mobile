@@ -1,10 +1,12 @@
 package com.example.todo.activities
 
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.TimePicker
 import androidx.room.Room
@@ -33,20 +35,33 @@ class AddTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
         database = Room.databaseBuilder(
             applicationContext, ToDoDatabase::class.java, "To_Do"
         ).build()
+
+        val taskCategories = resources.getStringArray(R.array.TaskCategories)
+        val arrayAdapter = ArrayAdapter(this, R.layout.dropdown_item, taskCategories)
+        addCategoryInputText.setAdapter(arrayAdapter)
+
         getCurrentCalendarDateTime()
         updateTaskTimeView()
 
-        editNewTaskTimeButton.setOnClickListener {
+        addTaskTimeInput.setOnClickListener {
             getCurrentCalendarDateTime()
             DatePickerDialog(this, this, year, month, day).show()
+        }
+
+        notifyLayoutInput.setOnClickListener {
+            if (notifyLayoutInput.text.toString() == "Notify"){
+                notifyLayoutInput.setText("Muted")
+            } else {
+                notifyLayoutInput.setText("Notify")
+            }
         }
 
         saveButton.setOnClickListener {
             if (addTitleInputText.text.toString().trim { it <= ' ' }.isNotEmpty()
                 && addDescriptionInputText.text.toString().trim { it <= ' ' }.isNotEmpty()
             ) {
-                var title = addTitleInputText.getText().toString()
-                var priority = addDescriptionInputText.getText().toString()
+                val title = addTitleInputText.getText().toString()
+                val priority = addDescriptionInputText.getText().toString()
                 DataObject.setData(title, priority)
                 GlobalScope.launch {
                     database.dao().insertTask(Entity(0, title, priority))
@@ -79,9 +94,17 @@ class AddTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
         } else {
             day.toString()
         }
-        "$year-$monthWithLeadingZero-$dayWithLeadingZero $hour:$minute".also {
-            addTaskTime.text = it
+        val hourWithLeadingZero = if (hour < 10) {
+            "0$hour"
+        } else {
+            hour.toString()
         }
+        val minuteWithLeadingZero = if (minute < 10) {
+            "0$minute"
+        } else {
+            minute.toString()
+        }
+        addTaskTimeInput.setText("$year-$monthWithLeadingZero-$dayWithLeadingZero $hourWithLeadingZero:$minuteWithLeadingZero")
     }
 
     override fun onDateSet(view: DatePicker?, yearVal: Int, monthVal: Int, dayOfMonthVal: Int) {

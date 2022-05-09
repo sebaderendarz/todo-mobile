@@ -18,15 +18,15 @@
         app:showAsAction="never">
         <menu>
             <item android:id="@+id/categoryAll"
-                android:title="All" />
+                android:title="@string/categoryAll" />
             <item android:id="@+id/categoryHome"
-                android:title="Home" />
+                android:title="@string/categoryHome" />
             <item android:id="@+id/categoryWork"
-                android:title="Work" />
+                android:title="@string/categoryWork" />
             <item android:id="@+id/categoryHobby"
-                android:title="Hobby" />
+                android:title="@string/categoryHobby" />
             <item android:id="@+id/categoryOther"
-                android:title="Other" />
+                android:title="@string/categoryOther" />
         </menu>
     </item>
 

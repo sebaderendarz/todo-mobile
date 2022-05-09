@@ -45,24 +45,104 @@
             android:textColor="@color/white" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/addTaskTime"
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/TextDropdown"
+        android:id="@+id/addCategoryInputLayout"
+        android:layout_marginBottom="20dp"
+        android:hint="Category">
+
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:id="@+id/addCategoryInputText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:textColor="@color/white"
+            android:text="Home"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/TextInput"
+        android:id="@+id/addTaskTimeLayout"
+        android:layout_marginBottom="20dp"
+        android:hint="Due Time">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/addTaskTimeInput"
+            android:cursorVisible="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:gravity="center"
+            android:padding="11dp"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:text="2022-05-15 15:30"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:text="2022-05-15 15:30"
-        android:textFontWeight="@android:integer/config_mediumAnimTime"
-        android:textColor="@color/white"
-        android:textSize="25sp"
+        android:orientation="horizontal"
         android:gravity="center"
-        android:fontFamily="sans-serif"/>
+        android:layout_marginBottom="20dp">
 
-    <Button
-        android:id="@+id/editNewTaskTimeButton"
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:text="Edit Time"/>
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" >
+        </Space>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/TextInput"
+            android:id="@+id/notifyLayout"
+            android:layout_width="wrap_content"
+            android:hint="Notification">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/notifyLayoutInput"
+                android:cursorVisible="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:gravity="center"
+                android:padding="11dp"
+                android:textColor="@color/white"
+                android:textSize="25sp"
+                android:text="Notify"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" >
+        </Space>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/TextInput"
+            android:id="@+id/statusLayout"
+            android:layout_width="wrap_content"
+            android:hint="Status">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/statusLayoutInput"
+                android:cursorVisible="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:gravity="center"
+                android:padding="11dp"
+                android:textColor="@color/white"
+                android:textSize="25sp"
+                android:text="Pending"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" >
+        </Space>
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/saveButton"
