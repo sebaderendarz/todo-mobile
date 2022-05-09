@@ -18,11 +18,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.UpdateTaskActivity"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity
             android:name=".activities.AddTaskActivity"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activities.UpdateTaskActivity"
+            android:windowSoftInputMode="adjustPan"/>
     </application>
 
 </manifest>

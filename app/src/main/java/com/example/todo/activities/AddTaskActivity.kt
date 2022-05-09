@@ -1,7 +1,5 @@
 package com.example.todo.activities
 
-
-import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
@@ -18,6 +16,10 @@ import kotlinx.android.synthetic.main.activity_add_task.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
+
+// TODO -> applies to UpdateTaskActivity too
+// 1. Categories disappear after orientation change. Probably there will be the same with other values.
+//    Add onSaveInstanceState() logic.
 
 
 class AddTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
