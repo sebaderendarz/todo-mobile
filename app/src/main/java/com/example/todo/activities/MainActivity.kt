@@ -15,7 +15,7 @@ import com.example.todo.ToDoDatabase
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-// entity - table
+// TaskEntity - table
 // dao - queries
 // database
 

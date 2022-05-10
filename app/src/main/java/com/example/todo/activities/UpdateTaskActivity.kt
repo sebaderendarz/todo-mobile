@@ -9,10 +9,10 @@ import android.widget.DatePicker
 import android.widget.TimePicker
 import androidx.room.Room
 import com.example.todo.DataObject
-import com.example.todo.Entity
+import com.example.todo.TaskEntity
 import com.example.todo.R
 import com.example.todo.ToDoDatabase
-import kotlinx.android.synthetic.main.activity_add_task.*
+import com.example.todo.utils.TimeHandler
 import kotlinx.android.synthetic.main.activity_update_task.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -21,6 +21,7 @@ import java.util.*
 
 class UpdateTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
     TimePickerDialog.OnTimeSetListener {
+    private val timeHandler = TimeHandler()
     private lateinit var database: ToDoDatabase
     private var year = 0
     private var month = 0
@@ -32,7 +33,7 @@ class UpdateTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_update_task)
         database = Room.databaseBuilder(
-            applicationContext, ToDoDatabase::class.java, "To_Do"
+            applicationContext, ToDoDatabase::class.java, "ToDo"
         ).build()
 
         val taskCategories = resources.getStringArray(R.array.TaskCategories)
@@ -66,22 +67,16 @@ class UpdateTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
         val pos = intent.getIntExtra("id", -1)
         if (pos != -1) {
             val title = DataObject.getData(pos).title
-            val priority = DataObject.getData(pos).priority
+            val description = DataObject.getData(pos).description
             updateTitleInputText.setText(title)
-            updateDescriptionInputText.setText(priority)
+            updateDescriptionInputText.setText(description)
 
             deleteButton.setOnClickListener {
                 DataObject.deleteData(pos)
                 GlobalScope.launch {
-                    database.dao().deleteTask(
-                        Entity(
-                            pos + 1,
-                            updateTitleInputText.text.toString(),
-                            updateDescriptionInputText.text.toString()
-                        )
-                    )
+                    database.dao().deleteTaskById(pos + 1)
                 }
-                myIntent()
+                mainActivityIntent()
             }
 
             updateButton.setOnClickListener {
@@ -91,20 +86,27 @@ class UpdateTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
                     updateDescriptionInputText.text.toString()
                 )
                 GlobalScope.launch {
-                    database.dao().updateTask(
-                        Entity(
-                            pos + 1, updateTitleInputText.text.toString(),
-                            updateDescriptionInputText.text.toString()
-                        )
+                    val sendNotification = updateNotifyLayoutInput.text.toString() != "Muted"
+                    val isActive = updateStatusLayoutInput.text.toString() != "Done"
+                    val entity = TaskEntity(
+                        pos + 1,
+                        updateTitleInputText.text.toString(),
+                        updateDescriptionInputText.text.toString(),
+                        updateCategoryInputText.text.toString(),
+                        timeHandler.generateEpochFromTimeString(createdAtTaskTimeInput.text.toString() + ":00"),
+                        timeHandler.generateEpochFromTimeString(updateTaskTimeInput.text.toString() + ":00"),
+                        sendNotification = sendNotification,
+                        isActive = isActive
                     )
+                    database.dao().updateTask(entity)
                 }
-                myIntent()
+                mainActivityIntent()
             }
 
         }
     }
 
-    private fun myIntent() {
+    private fun mainActivityIntent() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     }
@@ -119,27 +121,10 @@ class UpdateTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
     }
 
     private fun updateTaskTimeView() {
-        val monthWithLeadingZero = if (month < 10) {
-            "0$month"
-        } else {
-            month.toString()
-        }
-        val dayWithLeadingZero = if (day < 10) {
-            "0$day"
-        } else {
-            day.toString()
-        }
-        val hourWithLeadingZero = if (hour < 10) {
-            "0$hour"
-        } else {
-            hour.toString()
-        }
-        val minuteWithLeadingZero = if (minute < 10) {
-            "0$minute"
-        } else {
-            minute.toString()
-        }
-        updateTaskTimeInput.setText("$year-$monthWithLeadingZero-$dayWithLeadingZero $hourWithLeadingZero:$minuteWithLeadingZero")
+        val timeString =
+            timeHandler.generateTimeStringFromTimeValues(year, month + 1, day, hour, minute)
+                .dropLast(3)
+        updateTaskTimeInput.setText(timeString)
     }
 
     override fun onDateSet(view: DatePicker?, yearVal: Int, monthVal: Int, dayOfMonthVal: Int) {
