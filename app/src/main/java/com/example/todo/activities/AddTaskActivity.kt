@@ -17,10 +17,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 
-// TODO -> applies to UpdateTaskActivity too
-// 1. Categories disappear after orientation change. Probably there will be the same with other values.
-//    Add onSaveInstanceState() logic.
-
 
 class AddTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
     TimePickerDialog.OnTimeSetListener {
@@ -51,7 +47,7 @@ class AddTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
         }
 
         notifyLayoutInput.setOnClickListener {
-            if (notifyLayoutInput.text.toString() == "Notify"){
+            if (notifyLayoutInput.text.toString() == "Notify") {
                 notifyLayoutInput.setText("Muted")
             } else {
                 notifyLayoutInput.setText("Notify")
@@ -121,5 +117,12 @@ class AddTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
         hour = hourOfDayVal
         minute = minuteVal
         updateTaskTimeView()
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        val taskCategories = resources.getStringArray(R.array.TaskCategories)
+        val arrayAdapter = ArrayAdapter(this, R.layout.dropdown_item, taskCategories)
+        addCategoryInputText.setAdapter(arrayAdapter)
     }
 }

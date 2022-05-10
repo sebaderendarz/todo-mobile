@@ -12,6 +12,7 @@ import com.example.todo.DataObject
 import com.example.todo.Entity
 import com.example.todo.R
 import com.example.todo.ToDoDatabase
+import kotlinx.android.synthetic.main.activity_add_task.*
 import kotlinx.android.synthetic.main.activity_update_task.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -47,7 +48,7 @@ class UpdateTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
         }
 
         updateNotifyLayoutInput.setOnClickListener {
-            if (updateNotifyLayoutInput.text.toString() == "Notify"){
+            if (updateNotifyLayoutInput.text.toString() == "Notify") {
                 updateNotifyLayoutInput.setText("Muted")
             } else {
                 updateNotifyLayoutInput.setText("Notify")
@@ -55,7 +56,7 @@ class UpdateTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
         }
 
         updateStatusLayoutInput.setOnClickListener {
-            if (updateStatusLayoutInput.text.toString() == "Pending"){
+            if (updateStatusLayoutInput.text.toString() == "Pending") {
                 updateStatusLayoutInput.setText("Done")
             } else {
                 updateStatusLayoutInput.setText("Pending")
@@ -153,5 +154,12 @@ class UpdateTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
         hour = hourOfDayVal
         minute = minuteVal
         updateTaskTimeView()
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        val taskCategories = resources.getStringArray(R.array.TaskCategories)
+        val arrayAdapter = ArrayAdapter(this, R.layout.dropdown_item, taskCategories)
+        updateCategoryInputText.setAdapter(arrayAdapter)
     }
 }

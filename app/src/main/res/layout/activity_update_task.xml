@@ -102,7 +102,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center"
         android:layout_marginBottom="20dp">
 
         <Space
@@ -115,6 +114,8 @@
             style="@style/TextInput"
             android:id="@+id/updateNotifyLayout"
             android:layout_width="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
             android:hint="Notification">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -122,6 +123,7 @@
                 android:cursorVisible="false"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:minWidth="127dp"
                 android:focusable="false"
                 android:gravity="center"
                 android:padding="11dp"
@@ -140,6 +142,8 @@
             style="@style/TextInput"
             android:id="@+id/updateStatusLayout"
             android:layout_width="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
             android:hint="Status">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -147,6 +151,7 @@
                 android:cursorVisible="false"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:minWidth="127dp"
                 android:focusable="false"
                 android:gravity="center"
                 android:padding="11dp"
@@ -164,26 +169,42 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="250dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" >
+        </Space>
+
         <Button
             android:id="@+id/updateButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Update"/>
 
-        <View
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" >
+        </Space>
 
         <Button
             android:id="@+id/deleteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/red"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/purple_500"
             android:text="Delete"/>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" >
+        </Space>
+
     </LinearLayout>
 
 </LinearLayout>
