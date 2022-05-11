@@ -18,5 +18,4 @@ interface ToDoDao {
 
     @Query("Select * from tasks")
     suspend fun getTasks():List<CardInfo>
-
 }

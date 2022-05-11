@@ -8,16 +8,21 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
-import com.example.todo.TasksAdapter
-import com.example.todo.DataObject
-import com.example.todo.R
-import com.example.todo.ToDoDatabase
+import com.example.todo.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 // TaskEntity - table
 // dao - queries
 // database
+
+// TODO
+// 1. Update CardInfo object. Add more fields. Think over if we need DataObject at all.
+// 2. Implement a logic that will update the list of tasks automatically.
+// 3. Add sharedPreferences logic and update of tasks list after click on menu.
+
 
 class MainActivity : ActivityBase() {
     private lateinit var database: ToDoDatabase
@@ -25,8 +30,11 @@ class MainActivity : ActivityBase() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         database = Room.databaseBuilder(
-            applicationContext, ToDoDatabase::class.java, "To_Do"
+            applicationContext, ToDoDatabase::class.java, "ToDo"
         ).build()
+        GlobalScope.launch {
+            DataObject.listdata = database.dao().getTasks() as MutableList<CardInfo>
+        }
 
         setRecycler()
         configureBinding()

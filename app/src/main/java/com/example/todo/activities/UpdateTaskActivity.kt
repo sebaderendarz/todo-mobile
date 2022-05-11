@@ -41,7 +41,6 @@ class UpdateTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
         updateCategoryInputText.setAdapter(arrayAdapter)
 
         getCurrentCalendarDateTime()
-        updateTaskTimeView()
 
         updateTaskTimeInput.setOnClickListener {
             getCurrentCalendarDateTime()
