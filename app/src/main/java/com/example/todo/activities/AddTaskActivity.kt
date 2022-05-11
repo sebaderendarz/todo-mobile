@@ -9,10 +9,8 @@ import android.widget.DatePicker
 import android.widget.TimePicker
 import android.widget.Toast
 import androidx.room.Room
-import com.example.todo.DataObject
-import com.example.todo.TaskEntity
-import com.example.todo.R
-import com.example.todo.ToDoDatabase
+import com.example.todo.*
+import com.example.todo.TaskRepository
 import com.example.todo.utils.TimeHandler
 import kotlinx.android.synthetic.main.activity_add_task.*
 import kotlinx.coroutines.GlobalScope
@@ -23,7 +21,7 @@ import java.util.*
 class AddTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
     TimePickerDialog.OnTimeSetListener {
     private val timeHandler = TimeHandler()
-    private lateinit var database: ToDoDatabase
+    private lateinit var taskRepository: TaskRepository
     private var year = 0
     private var month = 0
     private var day = 0
@@ -33,9 +31,9 @@ class AddTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_task)
-        database = Room.databaseBuilder(
-            applicationContext, ToDoDatabase::class.java, "ToDo"
-        ).build()
+
+        taskRepository = TaskRepository(ToDoDatabase.getDatabase(applicationContext).taskDao())
+
         val taskCategories = resources.getStringArray(R.array.TaskCategories)
         val arrayAdapter = ArrayAdapter(this, R.layout.dropdown_item, taskCategories)
         addCategoryInputText.setAdapter(arrayAdapter)
@@ -58,22 +56,18 @@ class AddTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
             if (addTitleInputText.text.toString().trim { it <= ' ' }.isNotEmpty()
                 && addDescriptionInputText.text.toString().trim { it <= ' ' }.isNotEmpty()
             ) {
-                val title = addTitleInputText.text.toString()
-                val description = addDescriptionInputText.text.toString()
                 val sendNotification = notifyLayoutInput.text.toString() != "Muted"
-                // TODO why we need a data object?
-                DataObject.setData(title, description)
+                val entity = TaskEntity(
+                    0,
+                    addTitleInputText.text.toString(),
+                    addDescriptionInputText.text.toString(),
+                    addCategoryInputText.text.toString(),
+                    timeHandler.generateEpochForCurrentTime(),
+                    timeHandler.generateEpochFromTimeValues(year, month + 1, day, hour, minute),
+                    sendNotification = sendNotification
+                )
                 GlobalScope.launch {
-                    val entity = TaskEntity(
-                        0,
-                        addTitleInputText.text.toString(),
-                        addDescriptionInputText.text.toString(),
-                        addCategoryInputText.text.toString(),
-                        timeHandler.generateEpochForCurrentTime(),
-                        timeHandler.generateEpochFromTimeValues(year, month + 1, day, hour, minute),
-                        sendNotification = sendNotification
-                    )
-                    database.dao().insertTask(entity)
+                    taskRepository.addTask(entity)
                 }
 
                 val intent = Intent(this, MainActivity::class.java)

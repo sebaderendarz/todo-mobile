@@ -6,43 +6,37 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.view.inputmethod.InputMethodManager
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.room.Room
 import com.example.todo.*
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
-
-// TaskEntity - table
-// dao - queries
-// database
 
 // TODO
-// 1. Update CardInfo object. Add more fields. Think over if we need DataObject at all.
-// 2. Implement a logic that will update the list of tasks automatically.
-// 3. Add sharedPreferences logic and update of tasks list after click on menu.
-
+// 1. Add sharedPreferences logic and update of tasks list after click on menu.
+// 2. Implement the logic that will store a text from input fields when orientation changes.
+// 3. Update task card styling in MainActivity.
 
 class MainActivity : ActivityBase() {
-    private lateinit var database: ToDoDatabase
+    private lateinit var taskRepository: TaskRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        database = Room.databaseBuilder(
-            applicationContext, ToDoDatabase::class.java, "ToDo"
-        ).build()
-        GlobalScope.launch {
-            DataObject.listdata = database.dao().getTasks() as MutableList<CardInfo>
-        }
+
+        taskRepository = TaskRepository(ToDoDatabase.getDatabase(applicationContext).taskDao())
 
         setRecycler()
         configureBinding()
     }
 
     private fun setRecycler() {
-        recycler_view.adapter = TasksAdapter(DataObject.getAllData())
+        val adapter = TasksAdapter()
+        recycler_view.adapter = adapter
         recycler_view.layoutManager = LinearLayoutManager(this)
+        taskRepository.getAllTasks.observe(this, Observer { tasks ->
+            adapter.setData(tasks)
+        })
     }
 
     private fun configureBinding(){
@@ -58,7 +52,7 @@ class MainActivity : ActivityBase() {
                 imm.hideSoftInputFromWindow(textInputText.windowToken, 0)
             }
             textInputLayout.clearFocus()
-            val taskTitle =textInputText.text.toString()
+            val taskTitle = textInputText.text.toString()
             println("Input text: $taskTitle")
             // TODO add search tasks by title logic
         }

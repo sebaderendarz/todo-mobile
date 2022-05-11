@@ -1,11 +1,19 @@
 package com.example.todo
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 
 @Dao
-interface ToDoDao {
+interface TaskDao {
+
+    @Query("SELECT * FROM tasks WHERE id = :taskId")
+    fun getTaskById(taskId: Int): TaskEntity
+
+    @Query("SELECT * FROM tasks")
+    fun getAllTasks(): LiveData<List<TaskEntity>>
+
     @Insert
-    suspend fun insertTask(entity: TaskEntity)
+    suspend fun addTask(entity: TaskEntity)
 
     @Update
     suspend fun updateTask(entity: TaskEntity)
@@ -15,7 +23,4 @@ interface ToDoDao {
 
     @Query("DELETE FROM tasks WHERE id = :taskId")
     suspend fun deleteTaskById(taskId: Int)
-
-    @Query("Select * from tasks")
-    suspend fun getTasks():List<CardInfo>
 }

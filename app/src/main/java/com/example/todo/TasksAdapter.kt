@@ -10,36 +10,34 @@ import com.example.todo.activities.UpdateTaskActivity
 import kotlinx.android.synthetic.main.task_view.view.*
 
 
-class TasksAdapter(var data: List<CardInfo>) : RecyclerView.Adapter<TasksAdapter.viewHolder>() {
-    class viewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var title = itemView.title
-        var description = itemView.description
-        var taskLayout = itemView.taskLayout
+class TasksAdapter : RecyclerView.Adapter<TasksAdapter.TasksViewHolder>() {
+    private var tasksList = emptyList<TaskEntity>()
+
+    class TasksViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {}
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TasksViewHolder {
+        return TasksViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.task_view, parent, false))
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): viewHolder {
-        var itemView = LayoutInflater.from(parent.context).inflate(R.layout.task_view, parent, false)
-        return viewHolder(itemView)
-    }
+    override fun onBindViewHolder(holder: TasksViewHolder, position: Int) {
+        val currentItem = tasksList[position]
+        holder.itemView.taskLayout.setBackgroundColor(Color.parseColor("#00917C"))
+        holder.itemView.title.text = currentItem.title
+        holder.itemView.description.text = currentItem.description
 
-    override fun onBindViewHolder(holder: viewHolder, position: Int) {
-        when (data[position].description.toLowerCase()) {
-            "high" -> holder.taskLayout.setBackgroundColor(Color.parseColor("#F05454"))
-            "medium" -> holder.taskLayout.setBackgroundColor(Color.parseColor("#EDC988"))
-            else -> holder.taskLayout.setBackgroundColor(Color.parseColor("#00917C"))
-        }
-
-        holder.title.text = data[position].title
-        holder.description.text = data[position].description
         holder.itemView.setOnClickListener{
             val intent= Intent(holder.itemView.context, UpdateTaskActivity::class.java)
-            intent.putExtra("id",position)
+            intent.putExtra("taskId", currentItem.id)
             holder.itemView.context.startActivity(intent)
         }
-
     }
 
     override fun getItemCount(): Int {
-        return data.size
+        return tasksList.size
+    }
+
+    fun setData(tasks: List<TaskEntity>){
+        tasksList = tasks
+        notifyDataSetChanged()
     }
 }

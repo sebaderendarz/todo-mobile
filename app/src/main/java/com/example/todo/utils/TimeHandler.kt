@@ -2,9 +2,11 @@ package com.example.todo.utils
 
 import android.annotation.SuppressLint
 import java.sql.Timestamp
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
+import java.util.*
 
 class TimeHandler {
 
@@ -56,5 +58,11 @@ class TimeHandler {
     ): Long {
         val timeString = generateTimeStringFromTimeValues(year, month, day, hour, minute, second)
         return Timestamp.valueOf(timeString).time / 1000
+    }
+
+    fun generateTimeStringFromEpoch(epoch: Long): String {
+        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm")
+        val date = Date(epoch * 1000)
+        return sdf.format(date)
     }
 }

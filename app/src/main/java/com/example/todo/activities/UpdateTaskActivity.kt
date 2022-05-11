@@ -7,13 +7,12 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.TimePicker
-import androidx.room.Room
-import com.example.todo.DataObject
-import com.example.todo.TaskEntity
-import com.example.todo.R
-import com.example.todo.ToDoDatabase
+import androidx.lifecycle.lifecycleScope
+import com.example.todo.*
+import com.example.todo.TaskRepository
 import com.example.todo.utils.TimeHandler
 import kotlinx.android.synthetic.main.activity_update_task.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
@@ -22,7 +21,7 @@ import java.util.*
 class UpdateTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
     TimePickerDialog.OnTimeSetListener {
     private val timeHandler = TimeHandler()
-    private lateinit var database: ToDoDatabase
+    private lateinit var taskRepository: TaskRepository
     private var year = 0
     private var month = 0
     private var day = 0
@@ -32,9 +31,8 @@ class UpdateTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_update_task)
-        database = Room.databaseBuilder(
-            applicationContext, ToDoDatabase::class.java, "ToDo"
-        ).build()
+
+        taskRepository = TaskRepository(ToDoDatabase.getDatabase(applicationContext).taskDao())
 
         val taskCategories = resources.getStringArray(R.array.TaskCategories)
         val arrayAdapter = ArrayAdapter(this, R.layout.dropdown_item, taskCategories)
@@ -63,41 +61,52 @@ class UpdateTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
             }
         }
 
-        val pos = intent.getIntExtra("id", -1)
-        if (pos != -1) {
-            val title = DataObject.getData(pos).title
-            val description = DataObject.getData(pos).description
-            updateTitleInputText.setText(title)
-            updateDescriptionInputText.setText(description)
+        val taskId = intent.getIntExtra("taskId", -1)
+        if (taskId != -1) {
+            val ref = this
+            lifecycleScope.launch(Dispatchers.IO) {
+                val taskEntity = taskRepository.getTaskById(taskId)
+                ref.runOnUiThread {
+                    updateTitleInputText.setText(taskEntity.title)
+                    updateDescriptionInputText.setText(taskEntity.description)
+                    updateCategoryInputText.setText(taskEntity.category, false)
+                    updateTaskTimeInput.setText(timeHandler.generateTimeStringFromEpoch(taskEntity.dueDate))
+                    createdAtTaskTimeInput.setText(timeHandler.generateTimeStringFromEpoch(taskEntity.createdAt))
+                    if (taskEntity.sendNotification){
+                        updateNotifyLayoutInput.setText("Notify")
+                    } else {
+                        updateNotifyLayoutInput.setText("Muted")
+                    }
+                    if (taskEntity.isActive){
+                        updateStatusLayoutInput.setText("Pending")
+                    } else {
+                        updateStatusLayoutInput.setText("Done")
+                    }
+                }
+            }
 
             deleteButton.setOnClickListener {
-                DataObject.deleteData(pos)
                 GlobalScope.launch {
-                    database.dao().deleteTaskById(pos + 1)
+                    taskRepository.deleteTaskById(taskId)
                 }
                 mainActivityIntent()
             }
 
             updateButton.setOnClickListener {
-                DataObject.updateData(
-                    pos,
+                val sendNotification = updateNotifyLayoutInput.text.toString() != "Muted"
+                val isActive = updateStatusLayoutInput.text.toString() != "Done"
+                val entity = TaskEntity(
+                    taskId,
                     updateTitleInputText.text.toString(),
-                    updateDescriptionInputText.text.toString()
+                    updateDescriptionInputText.text.toString(),
+                    updateCategoryInputText.text.toString(),
+                    timeHandler.generateEpochFromTimeString(createdAtTaskTimeInput.text.toString() + ":00"),
+                    timeHandler.generateEpochFromTimeString(updateTaskTimeInput.text.toString() + ":00"),
+                    sendNotification = sendNotification,
+                    isActive = isActive
                 )
                 GlobalScope.launch {
-                    val sendNotification = updateNotifyLayoutInput.text.toString() != "Muted"
-                    val isActive = updateStatusLayoutInput.text.toString() != "Done"
-                    val entity = TaskEntity(
-                        pos + 1,
-                        updateTitleInputText.text.toString(),
-                        updateDescriptionInputText.text.toString(),
-                        updateCategoryInputText.text.toString(),
-                        timeHandler.generateEpochFromTimeString(createdAtTaskTimeInput.text.toString() + ":00"),
-                        timeHandler.generateEpochFromTimeString(updateTaskTimeInput.text.toString() + ":00"),
-                        sendNotification = sendNotification,
-                        isActive = isActive
-                    )
-                    database.dao().updateTask(entity)
+                    taskRepository.updateTask(entity)
                 }
                 mainActivityIntent()
             }
