@@ -15,11 +15,18 @@ class TimeHandler {
         return LocalDateTime.now(ZoneId.of("CET")).toEpochSecond(ZoneOffset.UTC)
     }
 
-    fun generateEpochFromTimeString(time: String): Long{
+    fun generateEpochFromTimeString(time: String): Long {
         return Timestamp.valueOf(time).time / 1000
     }
 
-    fun generateTimeStringFromTimeValues(year: Int = 0, month: Int = 0, day: Int = 0, hour: Int = 0, minute: Int = 0, second: Int = 0): String {
+    fun generateTimeStringFromTimeValues(
+        year: Int = 0,
+        month: Int = 0,
+        day: Int = 0,
+        hour: Int = 0,
+        minute: Int = 0,
+        second: Int = 0
+    ): String {
         val monthWithLeadingZero = if (month < 10) {
             "0$month"
         } else {

@@ -9,6 +9,9 @@ import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todo.*
+import com.example.todo.adapters.TasksAdapter
+import com.example.todo.database.ToDoDatabase
+import com.example.todo.repositories.TaskRepository
 import kotlinx.android.synthetic.main.activity_main.*
 
 

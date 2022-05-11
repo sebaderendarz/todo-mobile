@@ -8,9 +8,10 @@ import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.TimePicker
 import android.widget.Toast
-import androidx.room.Room
 import com.example.todo.*
-import com.example.todo.TaskRepository
+import com.example.todo.repositories.TaskRepository
+import com.example.todo.database.ToDoDatabase
+import com.example.todo.database.entities.TaskEntity
 import com.example.todo.utils.TimeHandler
 import kotlinx.android.synthetic.main.activity_add_task.*
 import kotlinx.coroutines.GlobalScope

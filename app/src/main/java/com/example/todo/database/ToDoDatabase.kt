@@ -1,9 +1,11 @@
-package com.example.todo
+package com.example.todo.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.todo.database.daos.TaskDao
+import com.example.todo.database.entities.TaskEntity
 
 @Database(entities = [TaskEntity::class], version = 1)
 abstract class ToDoDatabase : RoomDatabase() {
