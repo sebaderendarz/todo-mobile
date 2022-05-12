@@ -20,10 +20,9 @@ import kotlinx.coroutines.launch
 
 
 // TODO
-// 1. Implement the logic that will store a text from input fields, list of tasks and other data when orientation changes.
-// 2. Update task card styling in MainActivity. Get rid of search box. Add search icon to menu instead?
+// 1. Update task card styling in MainActivity. Get rid of search box. Add search icon to menu instead?
 //      At least for horizontal view.
-// 3. Add notifications logic.
+// 2. Add notifications logic.
 
 class MainActivity : ActivityBase() {
     private lateinit var taskRepository: TaskRepository
@@ -64,6 +63,11 @@ class MainActivity : ActivityBase() {
             textInputLayout.clearFocus()
             updateTasksList(textInputText.text.toString())
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateTasksList(textInputText.text.toString())
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
