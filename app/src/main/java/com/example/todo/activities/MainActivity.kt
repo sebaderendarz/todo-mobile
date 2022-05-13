@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 
 
 // TODO
-// 1. Update task card styling in MainActivity. Get rid of search box. Add search icon to menu instead?
+// 1. Get rid of search box. Add search icon to menu instead?
 //      At least for horizontal view.
 // 2. Add notifications logic.
 
