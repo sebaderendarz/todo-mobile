@@ -1,12 +1,17 @@
 package com.example.todo.activities
 
+import android.Manifest
 import android.app.*
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Environment
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.TimePicker
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.todo.*
 import com.example.todo.repositories.TaskRepository
 import com.example.todo.database.ToDoDatabase
@@ -43,15 +48,29 @@ class AddTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
 
         getCurrentCalendarDateTime()
         updateTaskTimeView()
+
         addTaskTimeInput.setOnClickListener {
             getCurrentCalendarDateTime()
             DatePickerDialog(this, this, year, month, day).show()
         }
+
         notifyLayoutInput.setOnClickListener {
             if (notifyLayoutInput.text.toString() == "Notify") {
                 notifyLayoutInput.setText("Muted")
             } else {
                 notifyLayoutInput.setText("Notify")
+            }
+        }
+
+        attachmentsLayout.setOnClickListener {
+            if (checkWriteStoragePermission()){
+                // redirect to file manager activity
+                val intent = Intent(this, AttachmentsActivity::class.java)
+                val path = Environment.getExternalStorageDirectory().path
+                intent.putExtra("path", path)
+                startActivity(intent)
+            } else {
+                requestWriteStoragePermission()
             }
         }
 
@@ -117,6 +136,20 @@ class AddTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
         hour = hourOfDayVal
         minute = minuteVal
         updateTaskTimeView()
+    }
+
+    private fun checkWriteStoragePermission(): Boolean {
+        val result = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        return result == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestWriteStoragePermission(){
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+            Toast.makeText(this, "Storage permission is required!", Toast.LENGTH_SHORT).show()
+        } else {
+            // TODO not sure if "typedArray" is fine.
+            ActivityCompat.requestPermissions(this, listOf(Manifest.permission.WRITE_EXTERNAL_STORAGE).toTypedArray(), 111)
+        }
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
