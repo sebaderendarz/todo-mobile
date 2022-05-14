@@ -111,20 +111,32 @@ class MainActivity : ActivityBase() {
                 updateTasksList(textInputText.text.toString())
             }
             R.id.notification5Minutes -> {
+                val previousNotificationTime = settings.getNotificationTime()
                 settings.setNotificationTime(5)
-                updateNotifications()
+                if (previousNotificationTime != 5){
+                    updateNotifications()
+                }
             }
             R.id.notification15Minutes -> {
+                val previousNotificationTime = settings.getNotificationTime()
                 settings.setNotificationTime(15)
-                updateNotifications()
+                if (previousNotificationTime != 15){
+                    updateNotifications()
+                }
             }
             R.id.notification30Minutes -> {
+                val previousNotificationTime = settings.getNotificationTime()
                 settings.setNotificationTime(30)
-                updateNotifications()
+                if (previousNotificationTime != 30){
+                    updateNotifications()
+                }
             }
             R.id.notification60Minutes -> {
+                val previousNotificationTime = settings.getNotificationTime()
                 settings.setNotificationTime(60)
-                updateNotifications()
+                if (previousNotificationTime != 60){
+                    updateNotifications()
+                }
             }
         }
         return super.onOptionsItemSelected(item)
