@@ -34,7 +34,7 @@ interface TaskDao {
     fun getActiveTasksByCategoryOrderedByDueDate(title: String, category: String): List<TaskEntity>
 
     @Insert
-    suspend fun addTask(entity: TaskEntity)
+    suspend fun addTask(entity: TaskEntity): Long
 
     @Update
     suspend fun updateTask(entity: TaskEntity)

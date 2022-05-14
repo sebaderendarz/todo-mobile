@@ -20,9 +20,9 @@ import kotlinx.coroutines.launch
 
 
 // TODO
-// 1. Get rid of search box. Add search icon to menu instead?
-//      At least for horizontal view.
-// 2. Add notifications logic.
+// 1. Add notifications logic.
+// 2. Add attachments logic.
+// 3. Adjust layouts for version on tables.
 
 class MainActivity : ActivityBase() {
     private lateinit var taskRepository: TaskRepository

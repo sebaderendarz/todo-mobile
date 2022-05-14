@@ -1,17 +1,22 @@
 package com.example.todo.activities
 
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
+import android.app.*
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.TimePicker
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import com.example.todo.*
 import com.example.todo.repositories.TaskRepository
 import com.example.todo.database.ToDoDatabase
 import com.example.todo.database.entities.TaskEntity
+import com.example.todo.notifications.*
+import com.example.todo.notifications.Notification
+import com.example.todo.utils.SettingsHandler
 import com.example.todo.utils.TimeHandler
 import kotlinx.android.synthetic.main.activity_add_task.*
 import kotlinx.coroutines.GlobalScope
@@ -22,6 +27,7 @@ import java.util.*
 class AddTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
     TimePickerDialog.OnTimeSetListener {
     private val timeHandler = TimeHandler()
+    private lateinit var settings: SettingsHandler
     private lateinit var taskRepository: TaskRepository
     private var year = 0
     private var month = 0
@@ -29,10 +35,12 @@ class AddTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
     private var hour = 0
     private var minute = 0
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_task)
 
+        settings = SettingsHandler(applicationContext)
         taskRepository = TaskRepository(ToDoDatabase.getDatabase(applicationContext).taskDao())
 
         val taskCategories = resources.getStringArray(R.array.TaskCategories)
@@ -53,6 +61,8 @@ class AddTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
             }
         }
 
+        createNotificationChannel()
+
         saveButton.setOnClickListener {
             if (addTitleInputText.text.toString().trim { it <= ' ' }.isNotEmpty()
                 && addDescriptionInputText.text.toString().trim { it <= ' ' }.isNotEmpty()
@@ -68,7 +78,11 @@ class AddTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
                     sendNotification = sendNotification
                 )
                 GlobalScope.launch {
-                    taskRepository.addTask(entity)
+                    val rowId = taskRepository.addTask(entity)
+                    if (entity.sendNotification) {
+                        val rowIdInt = rowId.toInt()
+                        scheduleNotification(rowIdInt, entity.title, entity.dueDate)
+                    }
                 }
 
                 val intent = Intent(this, MainActivity::class.java)
@@ -77,6 +91,40 @@ class AddTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
                 Toast.makeText(this, "Incorrect task details!", Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createNotificationChannel() {
+        val name = "Due Date Channel"
+        val description = "Notify That the Task's Deadline Looming"
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel(channelId, name, importance)
+        channel.description = description
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
+    }
+
+    private fun scheduleNotification(notificationId: Int, title: String, time: Long) {
+        val intent = Intent(applicationContext, Notification::class.java)
+        val minutesBefore = settings.getNotificationTime()
+        val message = "Deadline is looming! $minutesBefore minutes remaining"
+        intent.putExtra(titleExtra, title)
+        intent.putExtra(messageExtra, message)
+
+        val pendingIntent = PendingIntent.getBroadcast(
+            applicationContext,
+            notificationId,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val notificationTime = (time - minutesBefore * 60) * 1000
+        alarmManager.setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            notificationTime,
+            pendingIntent
+        )
     }
 
     private fun getCurrentCalendarDateTime() {

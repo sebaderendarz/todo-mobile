@@ -9,6 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ToDoNoActionBar">
+        <receiver android:name=".notifications.Notification"
+            android:enabled="true"/>
         <activity android:name=".activities.MainActivity"
             android:label="Your Tasks"
             android:theme="@style/Theme.ToDo">

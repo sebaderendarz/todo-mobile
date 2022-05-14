@@ -41,8 +41,8 @@ class TaskRepository(private val taskDao: TaskDao) {
         return taskDao.getActiveTasksByCategoryOrderedByDueDate(title, category)
     }
 
-    suspend fun addTask(task: TaskEntity){
-        taskDao.addTask(task)
+    suspend fun addTask(task: TaskEntity): Long{
+        return taskDao.addTask(task)
     }
 
     suspend fun updateTask(task: TaskEntity){
