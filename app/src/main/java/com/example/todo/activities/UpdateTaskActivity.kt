@@ -1,7 +1,9 @@
 package com.example.todo.activities
 
 import android.app.DatePickerDialog
+import android.app.NotificationManager
 import android.app.TimePickerDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
@@ -9,9 +11,9 @@ import android.widget.DatePicker
 import android.widget.TimePicker
 import androidx.lifecycle.lifecycleScope
 import com.example.todo.*
-import com.example.todo.repositories.TaskRepository
 import com.example.todo.database.ToDoDatabase
 import com.example.todo.database.entities.TaskEntity
+import com.example.todo.repositories.TaskRepository
 import com.example.todo.utils.TimeHandler
 import kotlinx.android.synthetic.main.activity_update_task.*
 import kotlinx.coroutines.Dispatchers
@@ -90,6 +92,9 @@ class UpdateTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
             deleteButton.setOnClickListener {
                 GlobalScope.launch {
                     taskRepository.deleteTaskById(taskId)
+                    val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                    notificationManager.cancel(taskId)
+                    println("notification cancel called for ID: $taskId")
                 }
                 mainActivityIntent()
             }

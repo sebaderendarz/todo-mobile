@@ -125,6 +125,7 @@ class AddTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
             notificationTime,
             pendingIntent
         )
+        println("notification scheduled for ID: $notificationId and title: $title")
     }
 
     private fun getCurrentCalendarDateTime() {
