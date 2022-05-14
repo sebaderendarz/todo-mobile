@@ -21,7 +21,6 @@ import kotlinx.coroutines.launch
 
 // TODO
 // 1. Add attachments logic.
-// 2. Adjust layouts for version on tables.
 
 class MainActivity : ActivityBase() {
     private lateinit var taskRepository: TaskRepository
