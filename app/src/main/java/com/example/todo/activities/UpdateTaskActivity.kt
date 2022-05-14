@@ -1,9 +1,7 @@
 package com.example.todo.activities
 
 import android.app.DatePickerDialog
-import android.app.NotificationManager
 import android.app.TimePickerDialog
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
@@ -65,8 +63,8 @@ class UpdateTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
             }
         }
 
-        val taskId = intent.getIntExtra("taskId", -1)
-        if (taskId != -1) {
+        val taskId = intent.getIntExtra("taskId", 0)
+        if (taskId > 0) {
             val ref = this
             lifecycleScope.launch(Dispatchers.IO) {
                 val taskEntity = taskRepository.getTaskById(taskId)
@@ -75,13 +73,17 @@ class UpdateTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
                     updateDescriptionInputText.setText(taskEntity.description)
                     updateCategoryInputText.setText(taskEntity.category, false)
                     updateTaskTimeInput.setText(timeHandler.generateTimeStringFromEpoch(taskEntity.dueDate))
-                    createdAtTaskTimeInput.setText(timeHandler.generateTimeStringFromEpoch(taskEntity.createdAt))
-                    if (taskEntity.sendNotification){
+                    createdAtTaskTimeInput.setText(
+                        timeHandler.generateTimeStringFromEpoch(
+                            taskEntity.createdAt
+                        )
+                    )
+                    if (taskEntity.sendNotification) {
                         updateNotifyLayoutInput.setText("Notify")
                     } else {
                         updateNotifyLayoutInput.setText("Muted")
                     }
-                    if (taskEntity.isActive){
+                    if (taskEntity.isActive) {
                         updateStatusLayoutInput.setText("Pending")
                     } else {
                         updateStatusLayoutInput.setText("Done")
@@ -92,9 +94,7 @@ class UpdateTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
             deleteButton.setOnClickListener {
                 GlobalScope.launch {
                     taskRepository.deleteTaskById(taskId)
-                    val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                    notificationManager.cancel(taskId)
-                    println("notification cancel called for ID: $taskId")
+                    (application as ToDoApplication).cancelNotification(taskId)
                 }
                 mainActivityIntent()
             }
@@ -114,6 +114,15 @@ class UpdateTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
                 )
                 GlobalScope.launch {
                     taskRepository.updateTask(entity)
+                }
+                if (!isActive || !sendNotification) {
+                    (application as ToDoApplication).cancelNotification(taskId)
+                } else {
+                    (application as ToDoApplication).scheduleNotification(
+                        taskId,
+                        entity.title,
+                        entity.dueDate
+                    )
                 }
                 mainActivityIntent()
             }

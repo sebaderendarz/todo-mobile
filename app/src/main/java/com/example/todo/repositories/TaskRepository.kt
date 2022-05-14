@@ -25,6 +25,10 @@ class TaskRepository(private val taskDao: TaskDao) {
         return taskDao.getActiveTasksOrderedByDueDate(title)
     }
 
+    fun getActiveTasksWithScheduledNotifications(): List<TaskEntity>{
+        return taskDao.getActiveTasksWithScheduledNotifications()
+    }
+
     fun getTasksByCategory(title: String, category: String): List<TaskEntity> {
         return taskDao.getTasksByCategory(title, category)
     }

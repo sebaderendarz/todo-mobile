@@ -8,10 +8,10 @@ import androidx.core.app.NotificationCompat
 import com.example.todo.R
 
 
-const val notificationId = 1
-const val channelId = "channel1"
-const val titleExtra = "titleExtra"
+const val channelId = "dueDateChannel"
 const val messageExtra = "messageExtra"
+const val notificationIdExtra = "notificationIdExtra"
+const val titleExtra = "titleExtra"
 
 
 class Notification : BroadcastReceiver() {
@@ -22,6 +22,7 @@ class Notification : BroadcastReceiver() {
             .setContentTitle(intent.getStringExtra(titleExtra))
             .setContentText(intent.getStringExtra(messageExtra))
             .build()
+        val notificationId = intent.getIntExtra(notificationIdExtra, 0)
 
         val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         manager.notify(notificationId, notification)

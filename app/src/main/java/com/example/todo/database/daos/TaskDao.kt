@@ -21,6 +21,9 @@ interface TaskDao {
     @Query("SELECT * FROM tasks WHERE title LIKE '%'|| :title || '%' AND isActive = 1 ORDER BY dueDate ASC")
     fun getActiveTasksOrderedByDueDate(title: String): List<TaskEntity>
 
+    @Query("SELECT * FROM tasks WHERE isActive = 1 AND sendNotification = 1")
+    fun getActiveTasksWithScheduledNotifications(): List<TaskEntity>
+
     @Query("SELECT * FROM tasks WHERE title LIKE '%'|| :title || '%' AND category = :category")
     fun getTasksByCategory(title: String, category: String): List<TaskEntity>
 

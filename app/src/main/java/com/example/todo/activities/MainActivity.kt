@@ -20,9 +20,8 @@ import kotlinx.coroutines.launch
 
 
 // TODO
-// 1. Add notifications logic.
-// 2. Add attachments logic.
-// 3. Adjust layouts for version on tables.
+// 1. Add attachments logic.
+// 2. Adjust layouts for version on tables.
 
 class MainActivity : ActivityBase() {
     private lateinit var taskRepository: TaskRepository
@@ -34,7 +33,7 @@ class MainActivity : ActivityBase() {
         setContentView(R.layout.activity_main)
 
         taskRepository = TaskRepository(ToDoDatabase.getDatabase(applicationContext).taskDao())
-        settings = SettingsHandler(applicationContext)
+        settings = (application as ToDoApplication).settings
 
         configureBinding()
         setRecycler()
@@ -113,15 +112,19 @@ class MainActivity : ActivityBase() {
             }
             R.id.notification5Minutes -> {
                 settings.setNotificationTime(5)
+                updateNotifications()
             }
             R.id.notification15Minutes -> {
                 settings.setNotificationTime(15)
+                updateNotifications()
             }
             R.id.notification30Minutes -> {
                 settings.setNotificationTime(30)
+                updateNotifications()
             }
             R.id.notification60Minutes -> {
                 settings.setNotificationTime(60)
+                updateNotifications()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -171,4 +174,19 @@ class MainActivity : ActivityBase() {
             }
         }
     }
+
+    private fun updateNotifications() {
+        var tasksList: List<TaskEntity>
+        lifecycleScope.launch(Dispatchers.IO) {
+            tasksList = taskRepository.getActiveTasksWithScheduledNotifications()
+            for (index in tasksList.indices) {
+                (application as ToDoApplication).scheduleNotification(
+                    tasksList[index].id,
+                    tasksList[index].title,
+                    tasksList[index].dueDate
+                )
+            }
+        }
+    }
+
 }
