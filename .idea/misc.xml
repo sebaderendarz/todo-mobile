@@ -17,6 +17,8 @@
         <entry key="..\:/Coding/android-studio/PAM_SEM_6/Resources/TODO_App/app/src/main/res/layout/task_view.xml" value="0.17831813576494426" />
         <entry key="..\:/Coding/android-studio/PAM_SEM_6/Resources/TODO_App/app/src/main/res/layout/view.xml" value="0.10925925925925926" />
         <entry key="..\:/Coding/android-studio/PAM_SEM_6/Resources/TODO_App/app/src/main/res/menu/your_tasks_menu.xml" value="0.36666666666666664" />
+        <entry key="..\:/Coding/android-studio/PAM_SEM_6/ToDo/app/src/main/res/drawable/ic_baseline_attachment_100.xml" value="0.318" />
+        <entry key="..\:/Coding/android-studio/PAM_SEM_6/ToDo/app/src/main/res/drawable/ic_baseline_insert_drive_file_100.xml" value="0.318" />
         <entry key="..\:/Coding/android-studio/PAM_SEM_6/ToDo/app/src/main/res/layout-land/activity_add_task.xml" value="0.31040564373897706" />
         <entry key="..\:/Coding/android-studio/PAM_SEM_6/ToDo/app/src/main/res/layout-land/activity_main.xml" value="0.31040564373897706" />
         <entry key="..\:/Coding/android-studio/PAM_SEM_6/ToDo/app/src/main/res/layout-land/activity_update_task.xml" value="0.31040564373897706" />
@@ -29,6 +31,7 @@
         <entry key="..\:/Coding/android-studio/PAM_SEM_6/ToDo/app/src/main/res/layout/activity_attachments.xml" value="0.36666666666666664" />
         <entry key="..\:/Coding/android-studio/PAM_SEM_6/ToDo/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Coding/android-studio/PAM_SEM_6/ToDo/app/src/main/res/layout/activity_update_task.xml" value="0.36666666666666664" />
+        <entry key="..\:/Coding/android-studio/PAM_SEM_6/ToDo/app/src/main/res/layout/attachment_view.xml" value="0.4" />
         <entry key="..\:/Coding/android-studio/PAM_SEM_6/ToDo/app/src/main/res/layout/dropdown_item.xml" value="0.17831813576494426" />
         <entry key="..\:/Coding/android-studio/PAM_SEM_6/ToDo/app/src/main/res/layout/task_view.xml" value="0.36666666666666664" />
         <entry key="..\:/Coding/android-studio/PAM_SEM_6/ToDo/app/src/main/res/menu/attachments_menu.xml" value="0.1" />

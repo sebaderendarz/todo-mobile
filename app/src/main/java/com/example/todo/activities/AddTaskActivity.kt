@@ -64,6 +64,8 @@ class AddTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
 
         attachmentsLayout.setOnClickListener {
             if (checkWriteStoragePermission()){
+                // TODO how to take the list of files to this activity back?
+                    // people on stackoverflow suggest activityForResult and pass data back via Intent.
                 // redirect to file manager activity
                 val intent = Intent(this, AttachmentsActivity::class.java)
                 val path = Environment.getExternalStorageDirectory().path

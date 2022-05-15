@@ -1,7 +1,6 @@
 package com.example.todo.adapters
 
 import android.content.Intent
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +17,7 @@ class TasksAdapter : RecyclerView.Adapter<TasksAdapter.TasksViewHolder>() {
     private var tasksList = emptyList<TaskEntity>()
     private val timeHandler: TimeHandler = TimeHandler()
 
-    class TasksViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {}
+    class TasksViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TasksViewHolder {
         return TasksViewHolder(

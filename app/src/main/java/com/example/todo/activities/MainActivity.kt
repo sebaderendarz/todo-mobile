@@ -23,14 +23,14 @@ import kotlinx.coroutines.launch
 // 1. Add attachments logic.
 // IDEA:
 // Additional activity with "+" button to pick up files (file paths) from the device.
-// Display picked files on the list, but don't copy these files yet. On Click simply display
-// files located in directories outside one that you want to store data in. After save (new record
-// to the db added) create a directory named with taskId and copy all files from the list to this
-// directory.
+// Display picked files on the list, but don't save these files yet. After save (new record
+// to the db added) store the list of files in db (convert it to json and string or straight to string)
 
 // IDEA updates view:
-// Do the same trick as in addActivity. Don't edit contents of the file directory until user clicks
-// "update" or "delete" button.
+// Do the same trick as in addActivity.
+
+// Think over how to pass the list of files to the add/update activity from attachmentsActivity.
+
 
 class MainActivity : ActivityBase() {
     private lateinit var taskRepository: TaskRepository

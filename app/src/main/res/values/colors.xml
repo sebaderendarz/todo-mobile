@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="red">#B90E0A</color>
     <color name="green">#00917C</color>
+    <color name="grey">#707070</color>
     <!-- https://stackoverflow.com/questions/52175748/issue-change-border-color-or-box-stroke-for-unfocused-textinputlayout-in-androi -->
     <color name="mtrl_textinput_default_box_stroke_color">#FFFFFFFF</color>
 </resources>
