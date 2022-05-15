@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todo.R
 import com.example.todo.adapters.AttachmentsAdapter
@@ -14,6 +13,7 @@ import com.example.todo.data.Attachment
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.File
 
 
 const val attachmentsListIntentKey = "attachmentsList"
@@ -98,13 +98,25 @@ class AttachmentsActivity : ActivityBase() {
             }
 
             val uri: Uri? = data.data
-            if (uri!!.path != null) {
-                // TODO add fetching of file name based on the path
-                attachmentsList.add(Attachment(path = uri.path.toString()))
+            if (uri != null && uri.path != null) {
+//                val file = File(uri.path)
+//                val intent = Intent(Intent.ACTION_VIEW)
+//                val mimeType: MimeTypeMap = MimeTypeMap.getSingleton()
+//                val fileType: String? = mimeType.getMimeTypeFromExtension(file.extension)
+//                if (fileType != null && fileType != ""){
+//                    intent.setDataAndType(uri, fileType)
+//                } else {
+//                    intent.setDataAndType(uri, "*/*")
+//                }
+//                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
+//                this.startActivity(intent)
+
+                val file = File(uri.path)
+                attachmentsList.add(Attachment(uri.toString(), file.name, file.extension))
                 saveAttachmentsListToIntent()
                 recyclerAdapter.notifyDataSetChanged()
+
             }
-            Toast.makeText(applicationContext, uri.path, Toast.LENGTH_SHORT).show()
         }
     }
 }

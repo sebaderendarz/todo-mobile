@@ -201,7 +201,6 @@ class UpdateTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
         ) {
             Toast.makeText(this, "Storage permission is required!", Toast.LENGTH_SHORT).show()
         } else {
-            // TODO not sure if "typedArray" is fine.
             ActivityCompat.requestPermissions(
                 this,
                 listOf(Manifest.permission.WRITE_EXTERNAL_STORAGE).toTypedArray(),

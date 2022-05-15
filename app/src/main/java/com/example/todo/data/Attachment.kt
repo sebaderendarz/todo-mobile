@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Attachment(
-    val path: String = "",
-    val name: String = "",
+    val path: String,
+    val name: String,
+    val extension: String,
 )
