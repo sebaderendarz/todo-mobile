@@ -11,13 +11,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.todo.R
 import kotlinx.android.synthetic.main.attachment_view.view.*
 
-class AttachmentsAdapter(private val context: Context): RecyclerView.Adapter<AttachmentsAdapter.AttachmentsViewHolder>() {
+// TODO opening a file does not work!
+
+class AttachmentsAdapter(
+    private val context: Context,
+    private val deleteAttachmentInterface: OnDeleteAttachmentInterface
+) : RecyclerView.Adapter<AttachmentsAdapter.AttachmentsViewHolder>() {
     private var attachmentsList = mutableListOf<String>()
 
-    class AttachmentsViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
+    class AttachmentsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AttachmentsViewHolder {
-        return AttachmentsViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.attachment_view, parent, false))
+        return AttachmentsViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.attachment_view, parent, false)
+        )
     }
 
     override fun onBindViewHolder(holder: AttachmentsViewHolder, position: Int) {
@@ -27,6 +34,7 @@ class AttachmentsAdapter(private val context: Context): RecyclerView.Adapter<Att
             val intent = Intent()
             intent.action = Intent.ACTION_VIEW
             // TODO make sure `type` is fine.
+            // "content://$currentItem"
             intent.setDataAndType(Uri.parse(currentItem), "*/*")
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
@@ -38,11 +46,8 @@ class AttachmentsAdapter(private val context: Context): RecyclerView.Adapter<Att
             popupMenu.show()
 
             popupMenu.setOnMenuItemClickListener { item ->
-                if (item.title == "DELETE"){
-                    // delete item from the list of folders
-                    println("DELETE item from the list")
-                    attachmentsList.removeAt(position)
-                    notifyDataSetChanged()
+                if (item.title == "DELETE") {
+                    deleteAttachmentInterface.deleteAttachmentOnClick(position)
                 }
                 true
             }
@@ -54,8 +59,15 @@ class AttachmentsAdapter(private val context: Context): RecyclerView.Adapter<Att
         return attachmentsList.size
     }
 
-    fun setData(attachments: MutableList<String>){
+    fun setData(attachments: MutableList<String>) {
         attachmentsList = attachments
         notifyDataSetChanged()
     }
+
+    interface OnDeleteAttachmentInterface {
+
+        fun deleteAttachmentOnClick(position: Int)
+
+    }
+
 }

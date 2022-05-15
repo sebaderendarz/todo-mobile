@@ -17,12 +17,11 @@ import kotlinx.android.synthetic.main.activity_main.*
 // 2. Hold the current list of files when orientation changes. onCreate is called each time.
 //      Maybe simply saving the current state of mutable list to intent before orientation change
 //      is enough and the parent activity will know the current state to?
-//      How about changes inside adapter e.g when I click DELETE button. Set some onChangeListener
-//      on the mutableList object?
 
 class AttachmentsActivity : ActivityBase() {
     private var attachmentsList = mutableListOf<String>()
     private var pickUpFileRequestCode = 1
+    private lateinit var onDeleteAttachmentInterface: AttachmentsAdapter.OnDeleteAttachmentInterface
     private lateinit var recyclerAdapter: AttachmentsAdapter
 
 
@@ -30,14 +29,26 @@ class AttachmentsActivity : ActivityBase() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_attachments)
 
+
+        setOnDeleteAttachmentInterface()
         setRecycler()
     }
 
+    private fun setOnDeleteAttachmentInterface(){
+        onDeleteAttachmentInterface = object : AttachmentsAdapter.OnDeleteAttachmentInterface {
+            override fun deleteAttachmentOnClick(position: Int){
+                attachmentsList.removeAt(position)
+                recyclerAdapter.notifyDataSetChanged()
+            }
+        }
+    }
+
     private fun setRecycler() {
-        recyclerAdapter = AttachmentsAdapter(applicationContext)
+        recyclerAdapter = AttachmentsAdapter(applicationContext, onDeleteAttachmentInterface)
         recycler_view.adapter = recyclerAdapter
         recycler_view.layoutManager = LinearLayoutManager(this)
         recyclerAdapter.setData(attachmentsList)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -70,7 +81,7 @@ class AttachmentsActivity : ActivityBase() {
                 attachmentsList.add(uri.path.toString())
                 recyclerAdapter.notifyDataSetChanged()
             }
-            Toast.makeText(applicationContext, uri!!.path, Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, uri.path, Toast.LENGTH_SHORT).show()
         }
     }
 }
