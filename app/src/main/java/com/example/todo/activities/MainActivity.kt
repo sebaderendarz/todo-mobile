@@ -19,19 +19,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-// TODO
-// 1. Add attachments logic.
-// IDEA:
-// Additional activity with "+" button to pick up files (file paths) from the device.
-// Display picked files on the list, but don't save these files yet. After save (new record
-// to the db added) store the list of files in db (convert it to json and string or straight to string)
-
-// IDEA updates view:
-// Do the same trick as in addActivity.
-
-// Think over how to pass the list of files to the add/update activity from attachmentsActivity.
-
-
 class MainActivity : ActivityBase() {
     private lateinit var taskRepository: TaskRepository
     private lateinit var settings: SettingsHandler
@@ -122,28 +109,28 @@ class MainActivity : ActivityBase() {
             R.id.notification5Minutes -> {
                 val previousNotificationTime = settings.getNotificationTime()
                 settings.setNotificationTime(5)
-                if (previousNotificationTime != 5){
+                if (previousNotificationTime != 5) {
                     updateNotifications()
                 }
             }
             R.id.notification15Minutes -> {
                 val previousNotificationTime = settings.getNotificationTime()
                 settings.setNotificationTime(15)
-                if (previousNotificationTime != 15){
+                if (previousNotificationTime != 15) {
                     updateNotifications()
                 }
             }
             R.id.notification30Minutes -> {
                 val previousNotificationTime = settings.getNotificationTime()
                 settings.setNotificationTime(30)
-                if (previousNotificationTime != 30){
+                if (previousNotificationTime != 30) {
                     updateNotifications()
                 }
             }
             R.id.notification60Minutes -> {
                 val previousNotificationTime = settings.getNotificationTime()
                 settings.setNotificationTime(60)
-                if (previousNotificationTime != 60){
+                if (previousNotificationTime != 60) {
                     updateNotifications()
                 }
             }

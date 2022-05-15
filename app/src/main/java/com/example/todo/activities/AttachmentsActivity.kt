@@ -10,17 +10,18 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todo.R
 import com.example.todo.adapters.AttachmentsAdapter
+import com.example.todo.data.Attachment
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_main.*
 
-// TODO
-// 1. Take initial list of files from the intent
-// 2. Hold the current list of files when orientation changes. onCreate is called each time.
-//      Maybe simply saving the current state of mutable list to intent before orientation change
-//      is enough and the parent activity will know the current state to?
+
+const val attachmentsListIntentKey = "attachmentsList"
+
 
 class AttachmentsActivity : ActivityBase() {
-    private var attachmentsList = mutableListOf<String>()
-    private var pickUpFileRequestCode = 1
+    private val pickUpFileRequestCode = 1
+    private var attachmentsList = mutableListOf<Attachment>()
     private lateinit var onDeleteAttachmentInterface: AttachmentsAdapter.OnDeleteAttachmentInterface
     private lateinit var recyclerAdapter: AttachmentsAdapter
 
@@ -29,15 +30,35 @@ class AttachmentsActivity : ActivityBase() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_attachments)
 
-
+        getAttachmentsListFromIntent()
         setOnDeleteAttachmentInterface()
         setRecycler()
+        setResult(RESULT_OK, intent)
     }
 
-    private fun setOnDeleteAttachmentInterface(){
+    private fun getAttachmentsListFromIntent() {
+        val attachmentsListAsString = intent.getStringExtra(attachmentsListIntentKey)
+        attachmentsList = try {
+            val gson = Gson()
+            val itemType = object : TypeToken<MutableList<Attachment>>() {}.type
+            gson.fromJson(attachmentsListAsString, itemType)
+        } catch (e: java.lang.Exception) {
+            mutableListOf()
+        }
+    }
+
+    private fun saveAttachmentsListToIntent() {
+        val gson = Gson()
+        val attachmentsListAsString = gson.toJson(attachmentsList).toString()
+        intent.putExtra(attachmentsListIntentKey, attachmentsListAsString)
+        setResult(RESULT_OK, intent)
+    }
+
+    private fun setOnDeleteAttachmentInterface() {
         onDeleteAttachmentInterface = object : AttachmentsAdapter.OnDeleteAttachmentInterface {
-            override fun deleteAttachmentOnClick(position: Int){
+            override fun deleteAttachmentOnClick(position: Int) {
                 attachmentsList.removeAt(position)
+                saveAttachmentsListToIntent()
                 recyclerAdapter.notifyDataSetChanged()
             }
         }
@@ -63,7 +84,7 @@ class AttachmentsActivity : ActivityBase() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun openPickUpFileActivity(){
+    private fun openPickUpFileActivity() {
         val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.type = "*/*"
         startActivityForResult(intent, pickUpFileRequestCode)
@@ -71,14 +92,16 @@ class AttachmentsActivity : ActivityBase() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (pickUpFileRequestCode == requestCode && resultCode == Activity.RESULT_OK){
-            if (data == null){
+        if (pickUpFileRequestCode == requestCode && resultCode == Activity.RESULT_OK) {
+            if (data == null) {
                 return
             }
 
             val uri: Uri? = data.data
-            if (uri!!.path != null){
-                attachmentsList.add(uri.path.toString())
+            if (uri!!.path != null) {
+                // TODO add fetching of file name based on the path
+                attachmentsList.add(Attachment(path = uri.path.toString()))
+                saveAttachmentsListToIntent()
                 recyclerAdapter.notifyDataSetChanged()
             }
             Toast.makeText(applicationContext, uri.path, Toast.LENGTH_SHORT).show()

@@ -5,7 +5,6 @@ import android.app.*
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.Environment
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.TimePicker
@@ -26,9 +25,11 @@ import java.util.*
 
 class AddTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
     TimePickerDialog.OnTimeSetListener {
+    private val manageAttachmentsRequestCode = 1
     private val timeHandler = TimeHandler()
     private lateinit var settings: SettingsHandler
     private lateinit var taskRepository: TaskRepository
+    private var attachmentsList = "[]"
     private var year = 0
     private var month = 0
     private var day = 0
@@ -63,14 +64,10 @@ class AddTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
         }
 
         attachmentsLayout.setOnClickListener {
-            if (checkWriteStoragePermission()){
-                // TODO how to take the list of files to this activity back?
-                    // people on stackoverflow suggest activityForResult and pass data back via Intent.
-                // redirect to file manager activity
+            if (checkWriteStoragePermission()) {
                 val intent = Intent(this, AttachmentsActivity::class.java)
-                val path = Environment.getExternalStorageDirectory().path
-                intent.putExtra("path", path)
-                startActivity(intent)
+                intent.putExtra(attachmentsListIntentKey, attachmentsList)
+                startActivityForResult(intent, manageAttachmentsRequestCode)
             } else {
                 requestWriteStoragePermission()
             }
@@ -141,17 +138,40 @@ class AddTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
     }
 
     private fun checkWriteStoragePermission(): Boolean {
-        val result = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        val result =
+            ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         return result == PackageManager.PERMISSION_GRANTED
     }
 
-    private fun requestWriteStoragePermission(){
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+    private fun requestWriteStoragePermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(
+                this,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
+        ) {
             Toast.makeText(this, "Storage permission is required!", Toast.LENGTH_SHORT).show()
         } else {
             // TODO not sure if "typedArray" is fine.
-            ActivityCompat.requestPermissions(this, listOf(Manifest.permission.WRITE_EXTERNAL_STORAGE).toTypedArray(), 111)
+            ActivityCompat.requestPermissions(
+                this,
+                listOf(Manifest.permission.WRITE_EXTERNAL_STORAGE).toTypedArray(),
+                111
+            )
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (manageAttachmentsRequestCode == requestCode && resultCode == Activity.RESULT_OK) {
+            if (data != null) {
+                attachmentsList = data.getStringExtra(attachmentsListIntentKey).toString()
+            }
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(attachmentsListIntentKey, attachmentsList)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -159,5 +179,10 @@ class AddTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
         val taskCategories = resources.getStringArray(R.array.TaskCategories)
         val arrayAdapter = ArrayAdapter(this, R.layout.dropdown_item, taskCategories)
         addCategoryInputText.setAdapter(arrayAdapter)
+
+        val savedAttachmentsList = savedInstanceState.getString(attachmentsListIntentKey, "[]")
+        if (savedAttachmentsList != null) {
+            attachmentsList = savedAttachmentsList
+        }
     }
 }
