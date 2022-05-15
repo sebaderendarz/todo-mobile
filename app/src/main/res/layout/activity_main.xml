@@ -48,7 +48,5 @@
             android:textSize="25sp"
             app:iconTint="@color/purple_500" />
     </FrameLayout>
+
 </LinearLayout>
-
-
-

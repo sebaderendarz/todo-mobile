@@ -6,7 +6,7 @@ import androidx.annotation.RequiresApi
 import com.example.todo.notifications.NotificationsHandler
 import com.example.todo.utils.SettingsHandler
 
-class ToDoApplication: Application() {
+class ToDoApplication : Application() {
     lateinit var settings: SettingsHandler
     private lateinit var notificationsHandler: NotificationsHandler
 
@@ -18,11 +18,11 @@ class ToDoApplication: Application() {
         notificationsHandler.registerDefaultNotificationsChannel()
     }
 
-    fun scheduleNotification(notificationId: Int, title: String, time: Long){
+    fun scheduleNotification(notificationId: Int, title: String, time: Long) {
         notificationsHandler.scheduleNotification(notificationId, title, time)
     }
 
-    fun cancelNotification(notificationId: Int){
+    fun cancelNotification(notificationId: Int) {
         notificationsHandler.cancelNotification(notificationId)
     }
 }
