@@ -85,6 +85,7 @@ class AddTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
                     addCategoryInputText.text.toString(),
                     timeHandler.generateEpochForCurrentTime(),
                     timeHandler.generateEpochFromTimeValues(year, month + 1, day, hour, minute),
+                    attachmentsList=attachmentsList,
                     sendNotification = sendNotification
                 )
                 GlobalScope.launch {

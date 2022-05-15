@@ -31,7 +31,7 @@ class TasksAdapter : RecyclerView.Adapter<TasksAdapter.TasksViewHolder>() {
         holder.itemView.dueDate.text = timeHandler.generateTimeStringFromEpoch(currentItem.dueDate)
         holder.itemView.status.text = if (currentItem.isActive) "PENDING" else "DONE"
         holder.itemView.description.text = currentItem.description
-        if (!currentItem.hasAttachments){
+        if (currentItem.attachmentsList == "[]"){
             holder.itemView.attachments.isVisible = false
         }
         if (currentItem.sendNotification){

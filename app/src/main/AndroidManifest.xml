@@ -20,7 +20,6 @@
 
         <activity
             android:name=".activities.MainActivity"
-            android:label="Your Tasks"
             android:theme="@style/Theme.ToDo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

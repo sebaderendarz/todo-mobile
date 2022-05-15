@@ -16,5 +16,5 @@ data class TaskEntity(
     var timeZone: String = "CET",
     var sendNotification: Boolean = true,
     var isActive: Boolean = true,
-    var hasAttachments: Boolean = true
+    var attachmentsList: String = "[]"
 )
