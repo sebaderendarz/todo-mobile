@@ -26,7 +26,7 @@ abstract class ToDoDatabase : RoomDatabase() {
                     context.applicationContext,
                     ToDoDatabase::class.java,
                     "ToDo"
-                ).fallbackToDestructiveMigration().build()
+                ).build()
                 INSTANCE = instance
                 return instance
             }

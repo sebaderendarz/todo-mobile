@@ -1,12 +1,18 @@
 package com.example.todo.activities
 
+import android.Manifest
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.TimePicker
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.todo.*
 import com.example.todo.database.ToDoDatabase
@@ -22,8 +28,10 @@ import java.util.*
 
 class UpdateTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
     TimePickerDialog.OnTimeSetListener {
+    private val manageAttachmentsRequestCode = 1
     private val timeHandler = TimeHandler()
     private lateinit var taskRepository: TaskRepository
+    private var attachmentsList = "[]"
     private var year = 0
     private var month = 0
     private var day = 0
@@ -78,6 +86,9 @@ class UpdateTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
                             taskEntity.createdAt
                         )
                     )
+                    if (attachmentsList == "[]") {
+                        attachmentsList = taskEntity.attachmentsList
+                    }
                     if (taskEntity.sendNotification) {
                         updateNotifyLayoutInput.setText("Notify")
                     } else {
@@ -88,6 +99,16 @@ class UpdateTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
                     } else {
                         updateStatusLayoutInput.setText("Done")
                     }
+                }
+            }
+
+            updateAttachmentsLayout.setOnClickListener {
+                if (checkWriteStoragePermission()) {
+                    val intent = Intent(this, AttachmentsActivity::class.java)
+                    intent.putExtra(attachmentsListIntentKey, attachmentsList)
+                    startActivityForResult(intent, manageAttachmentsRequestCode)
+                } else {
+                    requestWriteStoragePermission()
                 }
             }
 
@@ -109,6 +130,7 @@ class UpdateTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
                     updateCategoryInputText.text.toString(),
                     timeHandler.generateEpochFromTimeString(createdAtTaskTimeInput.text.toString() + ":00"),
                     timeHandler.generateEpochFromTimeString(updateTaskTimeInput.text.toString() + ":00"),
+                    attachmentsList = attachmentsList,
                     sendNotification = sendNotification,
                     isActive = isActive
                 )
@@ -165,10 +187,52 @@ class UpdateTaskActivity : ActivityBase(), DatePickerDialog.OnDateSetListener,
         updateTaskTimeView()
     }
 
+    private fun checkWriteStoragePermission(): Boolean {
+        val result =
+            ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        return result == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestWriteStoragePermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(
+                this,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
+        ) {
+            Toast.makeText(this, "Storage permission is required!", Toast.LENGTH_SHORT).show()
+        } else {
+            // TODO not sure if "typedArray" is fine.
+            ActivityCompat.requestPermissions(
+                this,
+                listOf(Manifest.permission.WRITE_EXTERNAL_STORAGE).toTypedArray(),
+                111
+            )
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (manageAttachmentsRequestCode == requestCode && resultCode == Activity.RESULT_OK) {
+            if (data != null) {
+                attachmentsList = data.getStringExtra(attachmentsListIntentKey).toString()
+            }
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(attachmentsListIntentKey, attachmentsList)
+    }
+
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         val taskCategories = resources.getStringArray(R.array.TaskCategories)
         val arrayAdapter = ArrayAdapter(this, R.layout.dropdown_item, taskCategories)
         updateCategoryInputText.setAdapter(arrayAdapter)
+
+        val savedAttachmentsList = savedInstanceState.getString(attachmentsListIntentKey, "[]")
+        if (savedAttachmentsList != null) {
+            attachmentsList = savedAttachmentsList
+        }
     }
 }
