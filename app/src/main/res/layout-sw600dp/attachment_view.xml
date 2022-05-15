@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/black"
+    android:padding="20dp">
+
+    <ImageView
+        android:id="@+id/fileIconView"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@null"
+        android:src="@drawable/ic_baseline_insert_drive_file_100" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/fileNameTextView"
+        android:layout_toEndOf="@id/fileIconView"
+        android:paddingVertical="10dp"
+        android:paddingHorizontal="30dp"
+        android:textColor="@color/white"
+        android:textSize="33sp"
+        android:text="Document"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/grey"
+        android:layout_below="@id/fileNameTextView"/>
+
+</RelativeLayout>
