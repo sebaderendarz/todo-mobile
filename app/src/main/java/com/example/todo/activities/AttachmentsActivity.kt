@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.webkit.MimeTypeMap
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todo.R
 import com.example.todo.adapters.AttachmentsAdapter
@@ -108,7 +109,7 @@ class AttachmentsActivity : ActivityBase() {
 //                } else {
 //                    intent.setDataAndType(uri, "*/*")
 //                }
-//                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
+//                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION// or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
 //                this.startActivity(intent)
 
                 val file = File(uri.path)
