@@ -2,6 +2,7 @@ package com.example.todo.adapters
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,12 +36,13 @@ class AttachmentsAdapter(
             val intent = Intent(Intent.ACTION_VIEW)
             val mimeType: MimeTypeMap = MimeTypeMap.getSingleton()
             val fileType: String? = mimeType.getMimeTypeFromExtension(currentItem.extension)
-            if (fileType != null && fileType != ""){
-                intent.setDataAndType(currentItem.path.toUri(), fileType)
+            val uri: Uri = currentItem.path.toUri()
+            if (fileType != null && fileType != "") {
+                intent.setDataAndType(uri, fileType)
             } else {
-                intent.setDataAndType(currentItem.path.toUri(), "*/*")
+                intent.setDataAndType(uri, fileType)
             }
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION //  or Intent.FLAG_GRANT_READ_URI_PERMISSION
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION
             context.startActivity(intent)
         }
 

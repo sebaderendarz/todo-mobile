@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.webkit.MimeTypeMap
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todo.R
 import com.example.todo.adapters.AttachmentsAdapter
@@ -86,7 +85,7 @@ class AttachmentsActivity : ActivityBase() {
     }
 
     private fun openPickUpFileActivity() {
-        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
         intent.type = "*/*"
         startActivityForResult(intent, pickUpFileRequestCode)
     }
@@ -100,19 +99,11 @@ class AttachmentsActivity : ActivityBase() {
 
             val uri: Uri? = data.data
             if (uri != null && uri.path != null) {
-//                val file = File(uri.path)
-//                val intent = Intent(Intent.ACTION_VIEW)
-//                val mimeType: MimeTypeMap = MimeTypeMap.getSingleton()
-//                val fileType: String? = mimeType.getMimeTypeFromExtension(file.extension)
-//                if (fileType != null && fileType != ""){
-//                    intent.setDataAndType(uri, fileType)
-//                } else {
-//                    intent.setDataAndType(uri, "*/*")
-//                }
-//                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION// or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
-//                this.startActivity(intent)
-
                 val file = File(uri.path)
+                applicationContext.contentResolver.takePersistableUriPermission(
+                    uri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
                 attachmentsList.add(Attachment(uri.toString(), file.name, file.extension))
                 saveAttachmentsListToIntent()
                 recyclerAdapter.notifyDataSetChanged()
